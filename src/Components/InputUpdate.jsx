@@ -4,6 +4,7 @@ class Input extends Component {
   state = { updatedName: "" };
   handleSubmit = () => {
     this.props.updateFn(this.props.id, this.state.updatedName);
+    this.setState({ updatedName: "" });
   };
   handleOnChange = (e) => {
     this.setState({ updatedName: e.target.value });

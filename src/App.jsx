@@ -37,15 +37,34 @@ export default class App extends Component {
   handleDelete = async (id) => {
     try {
       const deleted = await api.delete(`/shoes/${id}`);
-      console.log("deleted", deleted);
+      console.log("delete", deleted);
       const updatedShoes = this.state.shoes.filter((shoe) => shoe.id !== id);
       this.setState({ shoes: updatedShoes });
     } catch (err) {
       console.log(err);
     }
   };
-  handleUpdate = (id, value) => {
-    console.log("update", id, value);
+  handleUpdate = async (id, value) => {
+    try {
+      const update = await api.put(`/shoes/${id}`, { name: value });
+      console.log("update", update);
+      const shoes = this.state.shoes;
+      const index = this.findIndex(shoes, id);
+      const item = this.state.shoes[index];
+      item.name = value;
+      shoes.splice(index, 1, item);
+      this.setState({ shoes });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  findIndex = (shoes, id) => {
+    let index;
+    shoes.forEach((shoe, i) => {
+      if (shoe.id === id) index = i;
+    });
+    return index;
   };
 
   render() {
